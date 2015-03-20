@@ -12,12 +12,12 @@
 #   MakeMaker Parameters:
 
 #     ABSTRACT_FROM => q[lib/Faidx.pm]
-#     AUTHOR => [q[Rishi Nag <rn6@internal.sanger.ac.uk>]]
+#     AUTHOR => [q[Rishi Nag <rishi@ebi.ac.uk>]]
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     DEFINE => q[]
-#     INC => q[-I.]
-#     LIBS => [q[]]
+#     DEFINE => q[-g -Wall -O2 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_CURSES_LIB=1 ]
+#     INC => q[-I.  -I../../htslib]
+#     LIBS => [q[-L../../htslib/ -lhts  -lz]]
 #     NAME => q[Faidx]
 #     PREREQ_PM => {  }
 #     TEST_REQUIRES => {  }
@@ -153,8 +153,8 @@ BASEEXT = Faidx
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = lib/Faidx.pm
-INC = -I.
-DEFINE = 
+INC = -I.  -I../../htslib
+DEFINE = -g -Wall -O2 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_CURSES_LIB=1 
 OBJECT = $(BASEEXT)$(OBJ_EXT)
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -290,6 +290,10 @@ MPOLLUTE =
 # Faidx might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
+EXTRALIBS = -L/nfs/users/nfs_r/rn6/cvs_checkouts/ensembl-personal/rn6/cram_bcf_2015/faidx_perlxs/faidx_xs/../../htslib -lhts -lz
+LDLOADLIBS = -L/nfs/users/nfs_r/rn6/cvs_checkouts/ensembl-personal/rn6/cram_bcf_2015/faidx_perlxs/faidx_xs/../../htslib -lhts -lz
+BSLOADLIBS = 
+LD_RUN_PATH = /nfs/users/nfs_r/rn6/cvs_checkouts/ensembl-personal/rn6/cram_bcf_2015/faidx_perlxs/faidx_xs/../../htslib:/software/ensembl/central/lib
 
 
 # --- MakeMaker const_cccmd section:
@@ -474,7 +478,7 @@ INST_DYNAMIC_FIX =
 
 $(INST_DYNAMIC): $(OBJECT) $(MYEXTLIB) $(BOOTSTRAP) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVE) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP)
 	$(RM_F) $@
-	$(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
+	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST)	\
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@
@@ -575,7 +579,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '---' > META_new.yml
 	$(NOECHO) $(ECHO) 'abstract: '\''Perl extension for accessing bgzip compressed and indexed FASTA using htslib'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  - '\''Rishi Nag <rn6@internal.sanger.ac.uk>'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  - '\''Rishi Nag <rishi@ebi.ac.uk>'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: 0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
@@ -598,7 +602,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '{' > META_new.json
 	$(NOECHO) $(ECHO) '   "abstract" : "Perl extension for accessing bgzip compressed and indexed FASTA using htslib",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
-	$(NOECHO) $(ECHO) '      "Rishi Nag <rn6@internal.sanger.ac.uk>"' >> META_new.json
+	$(NOECHO) $(ECHO) '      "Rishi Nag <rishi@ebi.ac.uk>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
 	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.120921",' >> META_new.json
@@ -983,7 +987,7 @@ testdb_static :: pure_all $(MAP_TARGET)
 ppd :
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="$(VERSION)">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension for accessing bgzip compressed and indexed FASTA using htslib</ABSTRACT>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR>Rishi Nag &lt;rn6@internal.sanger.ac.uk&gt;</AUTHOR>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR>Rishi Nag &lt;rishi@ebi.ac.uk&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-thread-multi-5.14" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd

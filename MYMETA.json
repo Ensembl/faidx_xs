@@ -1,7 +1,7 @@
 {
    "abstract" : "Perl extension for accessing bgzip compressed and indexed FASTA using htslib",
    "author" : [
-      "Rishi Nag <rn6@internal.sanger.ac.uk>"
+      "Rishi Nag <rishi@ebi.ac.uk>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.120921",

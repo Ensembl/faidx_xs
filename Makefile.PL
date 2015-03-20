@@ -8,10 +8,9 @@ WriteMakefile(
     PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Faidx.pm', # retrieve abstract from module
-       AUTHOR         => 'Rishi Nag <rn6@internal.sanger.ac.uk>') : ()),
-    LIBS              => [''], # e.g., '-lm'
-    DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
-    INC               => '-I.', # e.g., '-I. -I/usr/include/other'
-	# Un-comment this if you add C files to link with later:
-    # OBJECT            => '$(O_FILES)', # link all the C files too
+       AUTHOR         => 'Rishi Nag <rishi@ebi.ac.uk>') : ()),
+    LIBS              => ['-L../../htslib/ -lhts  -lz'], 
+    DEFINE            => '-g -Wall -O2 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_CURSES_LIB=1 ', 
+    INC               => '-I.  -I../../htslib', 
+
 );

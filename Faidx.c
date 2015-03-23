@@ -196,6 +196,91 @@ XS(XS_Faidx_print_hello)
     XSRETURN_EMPTY;
 }
 
+
+XS(XS_Faidx_new); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_new)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "classname, path");
+    {
+	char*	classname = (char *)SvPV_nolen(ST(0));
+	char*	path = (char *)SvPV_nolen(ST(1));
+	SV *	RETVAL;
+
+	RETVAL = new(classname, path);
+	ST(0) = RETVAL;
+	sv_2mortal(ST(0));
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Faidx_get_sequence); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_get_sequence)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "obj, location");
+    {
+	SV*	obj = ST(0);
+	SV*	location = ST(1);
+
+	get_sequence(obj, location);
+    }
+    XSRETURN_EMPTY;
+}
+
+
+XS(XS_Faidx_has_sequence); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_has_sequence)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "obj, sequence");
+    {
+	SV*	obj = ST(0);
+	SV*	sequence = ST(1);
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = has_sequence(obj, sequence);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Faidx_DESTROY); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_DESTROY)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "obj");
+    {
+	SV*	obj = ST(0);
+
+	DESTROY(obj);
+    }
+    XSRETURN_EMPTY;
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -221,6 +306,10 @@ XS(boot_Faidx)
     XS_VERSION_BOOTCHECK ;
 
         newXS("Faidx::print_hello", XS_Faidx_print_hello, file);
+        newXS("Faidx::new", XS_Faidx_new, file);
+        newXS("Faidx::get_sequence", XS_Faidx_get_sequence, file);
+        newXS("Faidx::has_sequence", XS_Faidx_has_sequence, file);
+        newXS("Faidx::DESTROY", XS_Faidx_DESTROY, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

@@ -122,5 +122,30 @@ void
 print_hello()
 
 
+SV*
+new(classname, path)
+  char* classname
+  char* path
+
+
+void 
+get_sequence(obj, location) 
+  SV* obj
+  SV* location
+
+
+int
+has_sequence(obj, sequence)
+  SV* obj
+  SV* sequence
+
+
+void
+DESTROY(obj)
+  SV* obj
+
+
+
+
 
 

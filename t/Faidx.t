@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3 ;
+use Test::More tests => 4 ;
 BEGIN { use_ok('Faidx') } ;
 
 #########################
@@ -19,4 +19,17 @@ BEGIN { use_ok('Faidx') } ;
 ok(1) ;
 Faidx::print_hello() ;
 ok(1) ;
+
+my $fasta = "t/Saccharomyces_cerevisiae.R64-1-1.dna.chromosome.I.fa.gz" ;
+my $location = "I:1-100" ;
+my $index = Faidx->new($fasta);
+
+my $seq = "" ;
+my $length = 0 ;
+($seq, $length) = $index->get_sequence($location);
+warn $seq;
+warn $length;
+
+ok(1) ;
+
 

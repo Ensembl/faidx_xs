@@ -20,32 +20,6 @@
 #  define Newx(v,n,t) New(0,v,n,t)
 #endif
 
-#define Inline_Stack_Vars dXSARGS
-#define Inline_Stack_Items items
-#define Inline_Stack_Item(x) ST(x)
-#define Inline_Stack_Reset sp = mark
-#define Inline_Stack_Push(x) XPUSHs(x)
-#define Inline_Stack_Done PUTBACK
-#define Inline_Stack_Return(x) XSRETURN(x)
-#define Inline_Stack_Void XSRETURN(0)
-
-#define INLINE_STACK_VARS Inline_Stack_Vars
-#define INLINE_STACK_ITEMS Inline_Stack_Items
-#define INLINE_STACK_ITEM(x) Inline_Stack_Item(x)
-#define INLINE_STACK_RESET Inline_Stack_Reset
-#define INLINE_STACK_PUSH(x) Inline_Stack_Push(x)
-#define INLINE_STACK_DONE Inline_Stack_Done
-#define INLINE_STACK_RETURN(x) Inline_Stack_Return(x)
-#define INLINE_STACK_VOID Inline_Stack_Void
-
-#define inline_stack_vars Inline_Stack_Vars
-#define inline_stack_items Inline_Stack_Items
-#define inline_stack_item(x) Inline_Stack_Item(x)
-#define inline_stack_reset Inline_Stack_Reset
-#define inline_stack_push(x) Inline_Stack_Push(x)
-#define inline_stack_done Inline_Stack_Done
-#define inline_stack_return(x) Inline_Stack_Return(x)
-#define inline_stack_void Inline_Stack_Void
 
 void print_hello()
 {
@@ -108,13 +82,15 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
 }
 
 
-int has_sequence(SV* obj, SV* sequence) 
+int has_sequence(SV* obj, SV* location) 
 {
   printf( "has_sequence called\n" ) ;
   printf( "\tobj address %p\n", &obj ) ;
 
   int has_seq;
-  has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(sequence, PL_na));
+  printf( "\tfor location:%s\n",SvPV(location, PL_na) ) ;
+  has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(location, PL_na));
+  printf( "\thas_seq:%d\n", has_seq ) ;
   return has_seq;
 }
 
@@ -131,7 +107,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 135 "Faidx.c"
+#line 111 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -183,7 +159,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 187 "Faidx.c"
+#line 163 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)
@@ -262,14 +238,14 @@ XS(XS_Faidx_has_sequence)
     dXSARGS;
 #endif
     if (items != 2)
-       croak_xs_usage(cv,  "obj, sequence");
+       croak_xs_usage(cv,  "obj, location");
     {
 	SV*	obj = ST(0);
-	SV*	sequence = ST(1);
+	SV*	location = ST(1);
 	int	RETVAL;
 	dXSTARG;
 
-	RETVAL = has_sequence(obj, sequence);
+	RETVAL = has_sequence(obj, location);
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);

@@ -40,7 +40,7 @@
 
 void print_hello()
 {
-  printf( "Hello World\n" ) ;
+  printf( "Hello World from the Faidx XS module\n" ) ;
 }
 
 // Code is written to use a blessed int pointer to this strut as an object
@@ -64,9 +64,10 @@ SV* new(const char * classname, const char * path)
   fai = fai_load(path);
   faidx->path = savepv(path);
   faidx->index = fai;
-  
+  printf( "Making New Object\n" ) ;
   obj = newSViv((IV)faidx);
   obj_ref = newRV_noinc(obj);
+  printf( "obj address %p\n", &obj ) ;
   sv_bless(obj_ref, gv_stashpv(classname, GV_ADD));
   SvREADONLY_on(obj);
 
@@ -85,6 +86,9 @@ void get_sequence(SV* obj, SV* location)
   seq = newSVpvn("",0);
   seq_len = 0;
   
+  printf( "get sequence called\n" ) ;
+  printf( "obj address %p\n", &obj ) ;
+
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
   char_seq = fai_fetch(fai, SvPV(location, PL_na), &seq_len);
@@ -102,6 +106,9 @@ void get_sequence(SV* obj, SV* location)
 
 int has_sequence(SV* obj, SV* sequence) 
 {
+  printf( "has sequence called\n" ) ;
+  printf( "obj address %p\n", &obj ) ;
+
   int has_seq;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(sequence, PL_na));
   return has_seq;
@@ -109,6 +116,9 @@ int has_sequence(SV* obj, SV* sequence)
 
 void DESTROY(SV* obj) 
 {
+  printf( "DESTROY called\n" ) ;
+  printf( "obj address %p\n", &obj ) ;
+
   Faidx* faidx = (Faidx*)SvIV(SvRV(obj));
   Safefree(faidx->path);
   fai_destroy(faidx->index);

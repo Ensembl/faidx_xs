@@ -1,0 +1,18 @@
+use strict;
+use warnings;
+
+use Faidx ;
+
+Faidx::print_hello() ;
+
+my $fasta = "t/Saccharomyces_cerevisiae.R64-1-1.dna.chromosome.I.fa.gz" ;
+my $location = "I:1-100" ;
+my $index = Faidx->new($fasta);
+
+my $seq = "" ;
+my $length = 0 ;
+($seq, $length) = $index->get_sequence($location);
+warn $seq;
+warn $length;
+
+

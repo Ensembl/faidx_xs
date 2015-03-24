@@ -54,12 +54,12 @@ void print_hello()
 
 // Code is written to use a blessed int pointer to this strut as an object
 // You cannot use Data::Dumper to inspect the Faidx object. Sorry
-
 typedef struct 
 {
   char* path;
   faidx_t* index;
 } Faidx ;
+
 
 SV* new(const char * classname, const char * path) 
 {
@@ -83,50 +83,46 @@ SV* new(const char * classname, const char * path)
   return obj_ref;
 }
 
-void get_sequence(SV* obj, SV* location) 
+
+void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len) 
 {
-  SV* seq;
-  int seq_len;
   faidx_t *fai;
   char* char_seq;
   
-  Inline_Stack_Vars;
-  
-  seq = newSVpvn("",0);
-  seq_len = 0;
+  *seq = newSVpvn("",0);
+  *seq_len = 0;
   
   printf( "get sequence called\n" ) ;
-  printf( "obj address %p\n", &obj ) ;
+  printf( "\tobj address %p\n", &obj ) ;
 
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
-  char_seq = fai_fetch(fai, SvPV(location, PL_na), &seq_len);
+  printf( "\tGoing to fetch sequence\n" ) ;
+  char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
+  printf( "\tSequence obtained in XS function is:%s\n", char_seq ) ;
+
   //Push into a SV
-  sv_catpv(seq, char_seq);
+  sv_catpv(*seq, char_seq);
   //Free the buffer created by faidx
   free(char_seq);
-  
-  Inline_Stack_Reset;
-  //Make sure you always do the sv_2mortal() otherwise memory leaks happen!
-  Inline_Stack_Push(sv_2mortal(seq));
-  Inline_Stack_Push(sv_2mortal(newSVuv(seq_len)));
-  Inline_Stack_Done;
 }
+
 
 int has_sequence(SV* obj, SV* sequence) 
 {
-  printf( "has sequence called\n" ) ;
-  printf( "obj address %p\n", &obj ) ;
+  printf( "has_sequence called\n" ) ;
+  printf( "\tobj address %p\n", &obj ) ;
 
   int has_seq;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(sequence, PL_na));
   return has_seq;
 }
 
+
 void DESTROY(SV* obj) 
 {
   printf( "DESTROY called\n" ) ;
-  printf( "obj address %p\n", &obj ) ;
+  printf( "\tGoodbye, object with address %p\n", &obj ) ;
 
   Faidx* faidx = (Faidx*)SvIV(SvRV(obj));
   Safefree(faidx->path);
@@ -135,7 +131,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 139 "Faidx.c"
+#line 135 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -187,7 +183,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 191 "Faidx.c"
+#line 187 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)
@@ -243,10 +239,17 @@ XS(XS_Faidx_get_sequence)
     {
 	SV*	obj = ST(0);
 	SV*	location = ST(1);
+	SV*	seq;
+	int	length;
 
-	get_sequence(obj, location);
+	get_sequence(obj, location, &seq, &length);
+	XSprePUSH;	EXTEND(SP,2);
+	PUSHs(sv_newmortal());
+	ST(0) = seq;
+	PUSHs(sv_newmortal());
+	sv_setiv(ST(1), (IV)length);
     }
-    XSRETURN_EMPTY;
+    XSRETURN(2);
 }
 
 

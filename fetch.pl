@@ -11,8 +11,12 @@ my $index = Faidx->new($fasta);
 
 my $seq = "" ;
 my $length = 0 ;
+my $hs = $index->has_sequence($location);
+print( "HAS SEQUENCE:$hs\n" ) ;
+
 ($seq, $length) = $index->get_sequence($location);
 warn $seq;
 warn $length;
+
 
 

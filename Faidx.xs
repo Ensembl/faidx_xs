@@ -78,8 +78,9 @@ int has_sequence(SV* obj, SV* location)
   printf( "has_sequence called\n" ) ;
   printf( "\tobj address %p\n", &obj ) ;
 
-  int has_seq;
+  int has_seq=-1 ;
   printf( "\tfor location:%s\n",SvPV(location, PL_na) ) ;
+  printf( "\thas_seq:%d\n", has_seq ) ;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(location, PL_na));
   printf( "\thas_seq:%d\n", has_seq ) ;
   return has_seq;

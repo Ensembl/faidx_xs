@@ -87,8 +87,9 @@ int has_sequence(SV* obj, SV* location)
   printf( "has_sequence called\n" ) ;
   printf( "\tobj address %p\n", &obj ) ;
 
-  int has_seq;
+  int has_seq=-1 ;
   printf( "\tfor location:%s\n",SvPV(location, PL_na) ) ;
+  printf( "\thas_seq:%d\n", has_seq ) ;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(location, PL_na));
   printf( "\thas_seq:%d\n", has_seq ) ;
   return has_seq;
@@ -107,7 +108,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 111 "Faidx.c"
+#line 112 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -159,7 +160,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 163 "Faidx.c"
+#line 164 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)

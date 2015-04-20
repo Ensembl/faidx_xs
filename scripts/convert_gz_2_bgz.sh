@@ -1,4 +1,5 @@
 
+
 find . -name "*.gz" -print0 | while read -d $'\0' file
 do
    echo $file

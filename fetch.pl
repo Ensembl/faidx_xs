@@ -6,7 +6,7 @@ use Faidx ;
 Faidx::print_hello() ;
 
 my $fasta = "t/Saccharomyces_cerevisiae.R64-1-1.dna.chromosome.I.fa.gz" ;
-my $location = "I:1-100" ;
+my $location = "I:90-200" ;
 my $index = Faidx->new($fasta);
 
 my $seq = "" ;

@@ -57,14 +57,12 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
   *seq = newSVpvn("",0);
   *seq_len = 0;
   
-  printf( "get sequence called\n" ) ;
-  printf( "\tobj address %p\n", &obj ) ;
-
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
-  printf( "\tGoing to fetch sequence\n" ) ;
+  printf( "\tget_sequence:Going to fetch sequence\n" ) ;
+  /* char *fai_fetch(const faidx_t *fai, const char *reg, int *len); */
   char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
-  printf( "\tSequence obtained in XS function is:%s\n", char_seq ) ;
+  printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
 
   //Push into a SV
   sv_catpv(*seq, char_seq);
@@ -86,6 +84,17 @@ int has_sequence(SV* obj, SV* location)
   return has_seq;
 }
 
+int length(SV* obj, char* identifier)
+{
+    printf( "length() called\n" ) ;
+    printf( "\tobj address %p\n", &obj ) ;
+    int length = 22456 ;
+    faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
+    
+    /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
+    length = faidx_seq_len(fai, identifier) ;
+    return length ;
+}
 
 void DESTROY(SV* obj) 
 {
@@ -134,5 +143,8 @@ DESTROY(obj)
 
 
 
-
+int
+length(obj, seq_id)
+  SV* obj
+  char* seq_id
 

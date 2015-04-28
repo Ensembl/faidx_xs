@@ -66,14 +66,12 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
   *seq = newSVpvn("",0);
   *seq_len = 0;
   
-  printf( "get sequence called\n" ) ;
-  printf( "\tobj address %p\n", &obj ) ;
-
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
-  printf( "\tGoing to fetch sequence\n" ) ;
+  printf( "\tget_sequence:Going to fetch sequence\n" ) ;
+  /* char *fai_fetch(const faidx_t *fai, const char *reg, int *len); */
   char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
-  printf( "\tSequence obtained in XS function is:%s\n", char_seq ) ;
+  printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
 
   //Push into a SV
   sv_catpv(*seq, char_seq);
@@ -95,6 +93,17 @@ int has_sequence(SV* obj, SV* location)
   return has_seq;
 }
 
+int length(SV* obj, char* identifier)
+{
+    printf( "length() called\n" ) ;
+    printf( "\tobj address %p\n", &obj ) ;
+    int length = 22456 ;
+    faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
+    
+    /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
+    length = faidx_seq_len(fai, identifier) ;
+    return length ;
+}
 
 void DESTROY(SV* obj) 
 {
@@ -108,7 +117,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 112 "Faidx.c"
+#line 121 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -160,7 +169,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 164 "Faidx.c"
+#line 173 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)
@@ -271,6 +280,29 @@ XS(XS_Faidx_DESTROY)
     XSRETURN_EMPTY;
 }
 
+
+XS(XS_Faidx_length); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_length)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "obj, seq_id");
+    {
+	SV*	obj = ST(0);
+	char*	seq_id = (char *)SvPV_nolen(ST(1));
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = length(obj, seq_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -300,6 +332,7 @@ XS(boot_Faidx)
         newXS("Faidx::get_sequence", XS_Faidx_get_sequence, file);
         newXS("Faidx::has_sequence", XS_Faidx_has_sequence, file);
         newXS("Faidx::DESTROY", XS_Faidx_DESTROY, file);
+        newXS("Faidx::length", XS_Faidx_length, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

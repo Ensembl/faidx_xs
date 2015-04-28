@@ -20,6 +20,9 @@ warn $length;
 print( "$location GET SEQUENCE(seq):$seq\n" ) ;
 print( "$location GET SEQUENCE(length):$length\n" ) ;
 
+$length = $index->length("I") ;
+print( "$location LENGTH(length):$length\n" ) ;
+
 #now test on other sequences
 print ("\n\n********TEST 2******\n") ;
 $fasta = "/lustre/scratch109/ensembl/rn6/vep_tutorial/homo_sapiens/79_GRCh38/22/31000001-32000000.gz" ;

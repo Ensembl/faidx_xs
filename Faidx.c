@@ -97,11 +97,13 @@ int length(SV* obj, char* identifier)
 {
     printf( "length() called\n" ) ;
     printf( "\tobj address %p\n", &obj ) ;
-    int length = 22456 ;
+    printf( "\tfor seq with ID:%s\n",identifier ) ;
+    int length = 22456 ; /* dummy number for now */
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     
     /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
     length = faidx_seq_len(fai, identifier) ;
+    printf( "length calculated as %d\n", length ) ;
     return length ;
 }
 
@@ -117,7 +119,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 121 "Faidx.c"
+#line 123 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -169,7 +171,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 173 "Faidx.c"
+#line 175 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)

@@ -88,11 +88,13 @@ int length(SV* obj, char* identifier)
 {
     printf( "length() called\n" ) ;
     printf( "\tobj address %p\n", &obj ) ;
-    int length = 22456 ;
+    printf( "\tfor seq with ID:%s\n",identifier ) ;
+    int length = 22456 ; /* dummy number for now */
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     
     /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
     length = faidx_seq_len(fai, identifier) ;
+    printf( "length calculated as %d\n", length ) ;
     return length ;
 }
 

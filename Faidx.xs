@@ -59,7 +59,7 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
   
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
-  printf( "\tget_sequence:Going to fetch sequence\n" ) ;
+  printf( "get_sequence:Going to fetch sequence\n" ) ;
   /* char *fai_fetch(const faidx_t *fai, const char *reg, int *len); */
   char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
   printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
@@ -78,7 +78,6 @@ int has_sequence(SV* obj, SV* location)
 
   int has_seq=-1 ;
   printf( "\tfor location:%s\n",SvPV(location, PL_na) ) ;
-  printf( "\thas_seq:%d\n", has_seq ) ;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(location, PL_na));
   printf( "\thas_seq:%d\n", has_seq ) ;
   return has_seq;
@@ -88,7 +87,7 @@ int length(SV* obj, char* identifier)
 {
     printf( "length() called\n" ) ;
     printf( "\tobj address %p\n", &obj ) ;
-    printf( "\tfor seq with ID:%s\n",identifier ) ;
+    printf( "\tfor seq with ID:%s\n", identifier ) ;
     int length = 22456 ; /* dummy number for now */
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     
@@ -98,11 +97,9 @@ int length(SV* obj, char* identifier)
     return length ;
 }
 
+
 void DESTROY(SV* obj) 
 {
-  printf( "DESTROY called\n" ) ;
-  printf( "\tGoodbye, object with address %p\n", &obj ) ;
-
   Faidx* faidx = (Faidx*)SvIV(SvRV(obj));
   Safefree(faidx->path);
   fai_destroy(faidx->index);
@@ -138,15 +135,16 @@ has_sequence(obj, location)
   SV* location
 
 
+int 
+length(obj, identifier)
+  SV* obj
+  char* identifier
+
+
 void
 DESTROY(obj)
   SV* obj
 
 
 
-
-int
-length(obj, seq_id)
-  SV* obj
-  char* seq_id
 

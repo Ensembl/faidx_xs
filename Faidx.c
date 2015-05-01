@@ -71,7 +71,7 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
   printf( "get_sequence:Going to fetch sequence\n" ) ;
   /* char *fai_fetch(const faidx_t *fai, const char *reg, int *len); */
   char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
-  printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
+  //printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
 
   //Push into a SV
   sv_catpv(*seq, char_seq);
@@ -226,8 +226,9 @@ XS(XS_Faidx_get_sequence)
 	SV*	location = ST(1);
 	SV*	seq;
 	int	length;
-
-	get_sequence(obj, location, &seq, &length);
+#line 129 "Faidx.xs"
+     get_sequence(obj, location, &seq, &length) ;
+#line 232 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,2);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;
@@ -252,10 +253,10 @@ XS(XS_Faidx_get_sequence_no_length)
 	SV*	obj = ST(0);
 	SV*	location = ST(1);
 	SV*	seq;
-#line 136 "Faidx.xs"
+#line 139 "Faidx.xs"
   int seq_len=0 ;
   get_sequence(obj, location, &seq, &seq_len) ;
-#line 259 "Faidx.c"
+#line 260 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,1);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;

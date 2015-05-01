@@ -238,6 +238,32 @@ XS(XS_Faidx_get_sequence)
 }
 
 
+XS(XS_Faidx_get_sequence_no_length); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Faidx_get_sequence_no_length)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "obj, location");
+    {
+	SV*	obj = ST(0);
+	SV*	location = ST(1);
+	SV*	seq;
+#line 136 "Faidx.xs"
+  int seq_len=0 ;
+  get_sequence(obj, location, &seq, &seq_len) ;
+#line 259 "Faidx.c"
+	XSprePUSH;	EXTEND(SP,1);
+	PUSHs(sv_newmortal());
+	ST(0) = seq;
+    }
+    XSRETURN(1);
+}
+
+
 XS(XS_Faidx_has_sequence); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_has_sequence)
 {
@@ -329,6 +355,7 @@ XS(boot_Faidx)
         newXS("Faidx::print_hello", XS_Faidx_print_hello, file);
         newXS("Faidx::new", XS_Faidx_new, file);
         newXS("Faidx::get_sequence", XS_Faidx_get_sequence, file);
+        newXS("Faidx::get_sequence_no_length", XS_Faidx_get_sequence_no_length, file);
         newXS("Faidx::has_sequence", XS_Faidx_has_sequence, file);
         newXS("Faidx::length", XS_Faidx_length, file);
         newXS("Faidx::DESTROY", XS_Faidx_DESTROY, file);

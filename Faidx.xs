@@ -124,9 +124,17 @@ get_sequence(obj, location, OUTLIST seq, OUTLIST length)
   SV* obj
   SV* location  
   SV* seq
-  int length  
+  int length = NO_INIT
 
 
+void
+get_sequence_no_length(obj, location, OUTLIST seq) 
+  SV* obj
+  SV* location  
+  SV* seq
+CODE:
+  int seq_len=0 ;
+  get_sequence(obj, location, &seq, &seq_len) ;
 
 
 int

@@ -89,12 +89,11 @@ int has_sequence(SV* obj, SV* location)
   return has_seq;
 }
 
+
 int length(SV* obj, char* identifier)
 {
-    int length = 22456 ; /* dummy number for now */
+    int length = 0 ; 
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
-    
-    /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
     length = faidx_seq_len(fai, identifier) ;
     return length ;
 }

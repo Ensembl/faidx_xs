@@ -37,11 +37,6 @@
 #endif
 
 
-void print_hello()
-{
-  printf( "Hello from the Faidx XS module\n" ) ;
-}
-
 // Code is written to use a blessed int pointer to this strut as an object
 // You cannot use Data::Dumper to inspect the Faidx object. Sorry
 typedef struct 
@@ -49,6 +44,13 @@ typedef struct
   char* path;
   faidx_t* index;
 } Faidx ;
+
+
+
+void print_hello()
+{
+  printf( "Hello from the Faidx XS module\n" ) ;
+}
 
 
 SV* new(const char * classname, const char * path) 
@@ -117,7 +119,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 121 "Faidx.c"
+#line 123 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -169,7 +171,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 173 "Faidx.c"
+#line 175 "Faidx.c"
 
 XS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Faidx_print_hello)
@@ -227,9 +229,9 @@ XS(XS_Faidx_get_sequence)
 	SV*	location = ST(1);
 	SV*	seq;
 	int	length;
-#line 130 "Faidx.xs"
+#line 133 "Faidx.xs"
      get_sequence(obj, location, &seq, &length) ;
-#line 233 "Faidx.c"
+#line 235 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,2);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;
@@ -254,10 +256,10 @@ XS(XS_Faidx_get_sequence_no_length)
 	SV*	obj = ST(0);
 	SV*	location = ST(1);
 	SV*	seq;
-#line 140 "Faidx.xs"
+#line 143 "Faidx.xs"
   int seq_len=0 ;
   get_sequence(obj, location, &seq, &seq_len) ;
-#line 261 "Faidx.c"
+#line 263 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,1);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;
@@ -354,13 +356,13 @@ XS(boot_Faidx)
 #endif
     XS_VERSION_BOOTCHECK ;
 
-        newXS("Faidx::print_hello", XS_Faidx_print_hello, file);
-        newXS("Faidx::new", XS_Faidx_new, file);
-        newXS("Faidx::get_sequence", XS_Faidx_get_sequence, file);
-        newXS("Faidx::get_sequence_no_length", XS_Faidx_get_sequence_no_length, file);
-        newXS("Faidx::has_sequence", XS_Faidx_has_sequence, file);
-        newXS("Faidx::length", XS_Faidx_length, file);
-        newXS("Faidx::DESTROY", XS_Faidx_DESTROY, file);
+        (void)newXSproto_portable("Faidx::print_hello", XS_Faidx_print_hello, file, "");
+        (void)newXSproto_portable("Faidx::new", XS_Faidx_new, file, "$$");
+        (void)newXSproto_portable("Faidx::get_sequence", XS_Faidx_get_sequence, file, "$$$$");
+        (void)newXSproto_portable("Faidx::get_sequence_no_length", XS_Faidx_get_sequence_no_length, file, "$$$");
+        (void)newXSproto_portable("Faidx::has_sequence", XS_Faidx_has_sequence, file, "$$");
+        (void)newXSproto_portable("Faidx::length", XS_Faidx_length, file, "$$");
+        (void)newXSproto_portable("Faidx::DESTROY", XS_Faidx_DESTROY, file, "$");
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

@@ -28,11 +28,6 @@
 #endif
 
 
-void print_hello()
-{
-  printf( "Hello from the Faidx XS module\n" ) ;
-}
-
 // Code is written to use a blessed int pointer to this strut as an object
 // You cannot use Data::Dumper to inspect the Faidx object. Sorry
 typedef struct 
@@ -40,6 +35,13 @@ typedef struct
   char* path;
   faidx_t* index;
 } Faidx ;
+
+
+
+void print_hello()
+{
+  printf( "Hello from the Faidx XS module\n" ) ;
+}
 
 
 SV* new(const char * classname, const char * path) 
@@ -109,6 +111,7 @@ void DESTROY(SV* obj)
 
 
 MODULE = Faidx		PACKAGE = Faidx		
+PROTOTYPES: ENABLE
 
 void
 print_hello()

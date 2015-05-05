@@ -1,3 +1,19 @@
+/*
+ * Copyright [1999-2015] Wellcome Trust Sanger Institute and the EMBL-European Bioinformatics Institute
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -14,7 +30,7 @@
 
 void print_hello()
 {
-  printf( "Hello World from the Faidx XS module\n" ) ;
+  printf( "Hello from the Faidx XS module\n" ) ;
 }
 
 // Code is written to use a blessed int pointer to this strut as an object
@@ -38,10 +54,8 @@ SV* new(const char * classname, const char * path)
   fai = fai_load(path);
   faidx->path = savepv(path);
   faidx->index = fai;
-  printf( "Making New Object\n" ) ;
   obj = newSViv((IV)faidx);
   obj_ref = newRV_noinc(obj);
-  printf( "obj address %p\n", &obj ) ;
   sv_bless(obj_ref, gv_stashpv(classname, GV_ADD));
   SvREADONLY_on(obj);
 
@@ -59,10 +73,7 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
   
   fai = ((Faidx*)SvIV(SvRV(obj)))->index;
   //Fetch sequence
-  printf( "get_sequence:Going to fetch sequence\n" ) ;
-  /* char *fai_fetch(const faidx_t *fai, const char *reg, int *len); */
   char_seq = fai_fetch(fai, SvPV(location, PL_na), seq_len);
-  //printf( "\tget_sequence: Sequence obtained in XS function is:%s\n", char_seq ) ;
 
   //Push into a SV
   sv_catpv(*seq, char_seq);
@@ -73,27 +84,18 @@ void get_sequence(SV* obj, SV* location, SV** seq, int* seq_len)
 
 int has_sequence(SV* obj, SV* location) 
 {
-  printf( "has_sequence called\n" ) ;
-  printf( "\tobj address %p\n", &obj ) ;
-
   int has_seq=-1 ;
-  printf( "\tfor location:%s\n",SvPV(location, PL_na) ) ;
   has_seq = faidx_has_seq(((Faidx*)SvIV(SvRV(obj)))->index, SvPV(location, PL_na));
-  printf( "\thas_seq:%d\n", has_seq ) ;
   return has_seq;
 }
 
 int length(SV* obj, char* identifier)
 {
-    printf( "length() called\n" ) ;
-    printf( "\tobj address %p\n", &obj ) ;
-    printf( "\tfor seq with ID:%s\n", identifier ) ;
     int length = 22456 ; /* dummy number for now */
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     
     /* int faidx_seq_len(const faidx_t *fai, const char *seq);*/
     length = faidx_seq_len(fai, identifier) ;
-    printf( "length calculated as %d\n", length ) ;
     return length ;
 }
 

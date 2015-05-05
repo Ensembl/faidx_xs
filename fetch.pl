@@ -19,7 +19,7 @@ print( "$location GET SEQUENCE(seq):$seq\n" ) ;
 print( "$location GET SEQUENCE(length):$length\n" ) ;
 
 $length = $index->length("I") ;
-print( "$location LENGTH(length):$length\n" ) ;
+print( "I:LENGTH(length):$length\n" ) ;
 
 
 
@@ -31,8 +31,9 @@ my $index2 = Faidx->new($fasta);
 
 $seq = "" ;
 $length = 0 ;
-$hs = $index2->has_sequence($location);
-print( "\n\n$location HAS SEQUENCE:$hs\n" ) ;
+
+$length = $index2->length("22") ;
+print( "chr22:LENGTH(length):$length\n" ) ;
 
 
 

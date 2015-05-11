@@ -30,7 +30,7 @@ print( "I:LENGTH(I):$length\n" ) ;
 #test on human sequence
 print ("\n\n********TEST 2******\n") ;
 $fasta = "/nfs/users/nfs_r/rn6/myscratch9/vep_htslib/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz" ;
-$location = "22:2000-2133" ;
+$location = "2:44000-45133" ;
 
 $index = Faidx->new($fasta);
 
@@ -53,8 +53,8 @@ print( "\nWhat does it print?\n$single\n" ) ;
 
 
 
-$length = $index->length("22") ;
-print( "$location:LENGTH(length 22):$length\n" ) ;
+$length = $index->length("2") ;
+print( "$location:LENGTH(length 2):$length\n" ) ;
 
 
 

@@ -101,11 +101,11 @@ int has_sequence(SV* obj, SV* location)
 }
 
 
-int length(SV* obj, char* identifier)
+int length(SV* obj, char* seq_id)
 {
     int length = 0 ; 
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
-    length = faidx_seq_len(fai, identifier) ;
+    length = faidx_seq_len(fai, seq_id) ;
     return length ;
 }
 
@@ -300,14 +300,14 @@ XS(XS_Faidx_length)
     dXSARGS;
 #endif
     if (items != 2)
-       croak_xs_usage(cv,  "obj, identifier");
+       croak_xs_usage(cv,  "obj, seq_id");
     {
 	SV*	obj = ST(0);
-	char*	identifier = (char *)SvPV_nolen(ST(1));
+	char*	seq_id = (char *)SvPV_nolen(ST(1));
 	int	RETVAL;
 	dXSTARG;
 
-	RETVAL = length(obj, identifier);
+	RETVAL = length(obj, seq_id);
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);

@@ -92,11 +92,11 @@ int has_sequence(SV* obj, SV* location)
 }
 
 
-int length(SV* obj, char* identifier)
+int length(SV* obj, char* seq_id)
 {
     int length = 0 ; 
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
-    length = faidx_seq_len(fai, identifier) ;
+    length = faidx_seq_len(fai, seq_id) ;
     return length ;
 }
 
@@ -152,9 +152,9 @@ has_sequence(obj, location)
 
 
 int 
-length(obj, identifier)
+length(obj, seq_id)
   SV* obj
-  char* identifier
+  char* seq_id
 
 
 void

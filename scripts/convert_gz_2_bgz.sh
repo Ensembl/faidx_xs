@@ -7,7 +7,18 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+#check for presence of programs as required
+if !(hash gzip 2>/dev/null;) then
+    echo "GZIP not found, exiting"
+    exit 1
+fi
 
+if !(hash bgzip 2>/dev/null;) then
+    echo "BGZIP not found, exiting"
+    exit 1
+fi
+
+#process 
 if [ -f "$1" ]; then
     dir="${1%/*}"
     file="${1##*/}"

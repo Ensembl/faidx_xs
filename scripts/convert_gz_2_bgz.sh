@@ -12,6 +12,7 @@ if [ -z "$2" ]; then
     bgzip="bgzip"
 else
     bgzip=$2
+fi
 
 #check for presence of programs as required
 if !(hash gzip 2>/dev/null;) then

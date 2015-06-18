@@ -7,12 +7,24 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+
 if [ -z "$2" ]; then
     bgzip="bgzip"
 else
     bgzip=$2
+
+#check for presence of programs as required
+if !(hash gzip 2>/dev/null;) then
+    echo "$script_name: GZIP not found, exiting"
+    exit 1
 fi
 
+if !(hash $bgzip 2>/dev/null;) then
+    echo "$script_name: BGZIP not found, exiting"
+    exit 1
+fi
+
+#process 
 if [ -f "$1" ]; then
     dir="${1%/*}"
     file="${1##*/}"

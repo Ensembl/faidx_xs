@@ -2,6 +2,7 @@
 
 script_name="convert_gz_2_bgz.sh"
 
+
 if [ -z "$1" ]; then
     echo "Usage: $script_name gzipped_file|directory_with_gz_files [bgzip_program]"
     exit 1
@@ -11,7 +12,8 @@ fi
 if [ -z "$2" ]; then
     bgzip="bgzip"
 else
-    bgzip=$2
+    bgzip=$(cd "$(dirname "$2")" && pwd)/$(basename "$2") 
+    echo "Using user specified bgzip:$bgzip"
 fi
 
 #check for presence of programs as required
@@ -51,5 +53,7 @@ else
 fi
 
 exit $?
+
+
 
 

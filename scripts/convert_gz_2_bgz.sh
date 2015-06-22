@@ -34,6 +34,7 @@ if [ -f "$1" ]; then
     cd $dir
     gzip -d $file
     $bgzip $filename
+    cd -
 elif [ -d "$1" ]; then
     cd $1
     find . -name "*.gz" -print0 | while read -d $'\0' file

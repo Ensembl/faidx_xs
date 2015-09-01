@@ -5,15 +5,12 @@ This is a Perl XS interface into the FAIDX component of htslib
 ## INSTALLATION
 
 To install this module type the following:
-
-> perl Makefile.PL
-
-> make
-
-> make test
-
-> make install
-
+```
+perl Makefile.PL
+make
+make test
+make install
+```
 
 ## DEPENDENCIES
 

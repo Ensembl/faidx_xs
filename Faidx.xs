@@ -100,6 +100,8 @@ int length(SV* obj, char* seq_id)
     return length ;
 }
 
+
+
 AV* get_all_sequence_ids(SV* obj)
 {
     int num_seqs = 0 ;
@@ -117,9 +119,10 @@ AV* get_all_sequence_ids(SV* obj)
       this_id = newSVpv(faidx_name, 100);
       av_push(id_list, this_id) ;
     }
-
+    sv_2mortal((SV*)id_list);
     return id_list;
 }
+
 
 
 void DESTROY(SV* obj)

@@ -109,21 +109,35 @@ int length(SV* obj, char* seq_id)
     return length ;
 }
 
-void get_sequence_ids(SV* obj)
+
+
+AV* get_all_sequence_ids(SV* obj)
 {
     int num_seqs = 0 ;
-    char* faidx_name ;
+    const char* faidx_name ;
     int i ;
+    SV* this_id ;
+    AV* id_list = (AV*)sv_2mortal((SV*)newAV()) ;
+
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     num_seqs = faidx_nseq(fai) ;
-    printf( "rn6DEBUG:%d sequences found\n", num_seqs ) ;
+
     for( i=0 ; i<num_seqs ; i++ )
     {
       faidx_name = faidx_iseq(fai,i) ;
-      printf("rn6DEBUG seq id found:%s\n", faidx_name) ;
+      this_id = newSVpv(faidx_name, 100);
+      av_push(id_list, this_id) ;
+      printf( "rn6DEBUG:ORIG:%d:%s\n", i, faidx_name ) ;
+      printf( "rn6DEBUG:SvPV:%d:%s\n", i, SvPV_nolen(this_id) ) ;
     }
-    return ;
+
+    /* display some info about/from the array */
+    int top_index = (int)av_top_index(id_list) ;
+    printf( "rn6DEBUG:topindex=%d\n", top_index ) ;
+//    printf( "rn6DEBUG:topindex-1 value=%s\n", av_fetch(id_list, (top_index-1), 0),100 ) ;
+    return id_list;
 }
+
 
 
 void DESTROY(SV* obj)
@@ -135,7 +149,7 @@ void DESTROY(SV* obj)
 }
 
 
-#line 139 "Faidx.c"
+#line 153 "Faidx.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -277,7 +291,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 281 "Faidx.c"
+#line 295 "Faidx.c"
 
 XS_EUPXS(XS_Faidx_print_hello); /* prototype to pass -Wmissing-prototypes */
 XS_EUPXS(XS_Faidx_print_hello)
@@ -327,9 +341,9 @@ XS_EUPXS(XS_Faidx_get_sequence)
 ;
 	SV*	seq;
 	int	length;
-#line 149 "Faidx.xs"
+#line 163 "Faidx.xs"
      get_sequence(obj, location, &seq, &length) ;
-#line 333 "Faidx.c"
+#line 347 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,2);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;
@@ -352,10 +366,10 @@ XS_EUPXS(XS_Faidx_get_sequence_no_length)
 	SV*	location = ST(1)
 ;
 	SV*	seq;
-#line 159 "Faidx.xs"
+#line 173 "Faidx.xs"
   int seq_len=0 ;
   get_sequence(obj, location, &seq, &seq_len) ;
-#line 359 "Faidx.c"
+#line 373 "Faidx.c"
 	XSprePUSH;	EXTEND(SP,1);
 	PUSHs(sv_newmortal());
 	ST(0) = seq;
@@ -415,11 +429,13 @@ XS_EUPXS(XS_Faidx_get_all_sequence_ids)
     {
 	SV*	obj = ST(0)
 ;
-#line 180 "Faidx.xs"
-   get_sequence_ids(obj) ;
-#line 421 "Faidx.c"
+	AV *	RETVAL;
+
+	RETVAL = get_all_sequence_ids(obj);
+	ST(0) = newRV((SV*)RETVAL);
+	sv_2mortal(ST(0));
     }
-    XSRETURN_EMPTY;
+    XSRETURN(1);
 }
 
 

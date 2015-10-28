@@ -100,26 +100,25 @@ int length(SV* obj, char* seq_id)
     return length ;
 }
 
-void get_all_sequence_ids(SV* obj)
+AV* get_all_sequence_ids(SV* obj)
 {
     int num_seqs = 0 ;
     const char* faidx_name ;
     int i ;
     SV* this_id ;
+    AV* id_list = newAV() ;
 
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     num_seqs = faidx_nseq(fai) ;
-    SV* id_list[num_seqs] ;
 
-    printf( "rn6DEBUG:%d sequences found\n", num_seqs ) ;
     for( i=0 ; i<num_seqs ; i++ )
     {
       faidx_name = faidx_iseq(fai,i) ;
       this_id = newSVpv(faidx_name, 100);
-      id_list[i] = this_id ;
-      printf("rn6DEBUG seq id orig=%s\n", faidx_name) ;
+      av_push(id_list, this_id) ;
     }
-    return ;
+
+    return id_list;
 }
 
 

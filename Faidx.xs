@@ -118,15 +118,7 @@ AV* get_all_sequence_ids(SV* obj)
       faidx_name = faidx_iseq(fai,i) ;
       this_id = newSVpv(faidx_name, 100);
       av_push(id_list, this_id) ;
-      printf( "rn6DEBUG:ORIG:%d:%s\n", i, faidx_name ) ;
-      printf( "rn6DEBUG:SvPV:%d:%s\n", i, SvPV_nolen(this_id) ) ;
     }
-
-    /* for debug display some info about/from the array */
-    int top_index = (int)av_top_index(id_list) ;
-    printf( "rn6DEBUG:topindex=%d\n", top_index ) ;
-
-//    printf( "rn6DEBUG:topindex-1 value=%s\n", av_fetch(id_list, (top_index-1), 0),100 ) ;
     return id_list;
 }
 
@@ -191,6 +183,24 @@ length(obj, seq_id)
 AV*
 get_all_sequence_ids(obj)
    SV* obj
+
+void
+get_all_sequence_ids_array(obj)
+   SV* obj
+INIT:
+   int num_seqs ;
+   int i ;
+    const char* faidx_name ;
+PPCODE:
+    num_seqs = 0 ;
+    faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
+    num_seqs = faidx_nseq(fai) ;
+
+    for( i=0 ; i<num_seqs ; i++ )
+    {
+      faidx_name = faidx_iseq(fai,i) ;
+      XPUSHs(sv_2mortal(newSVpv(faidx_name, 100))) ;
+    }
 
 
 

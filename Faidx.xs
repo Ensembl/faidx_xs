@@ -116,7 +116,7 @@ AV* get_all_sequence_ids(SV* obj)
     for( i=0 ; i<num_seqs ; i++ )
     {
       faidx_name = faidx_iseq(fai,i) ;
-      this_id = newSVpv(faidx_name, 100);
+      this_id = newSVpv(faidx_name,0);
       av_push(id_list, this_id) ;
     }
     return id_list;
@@ -195,11 +195,11 @@ PPCODE:
     num_seqs = 0 ;
     faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
     num_seqs = faidx_nseq(fai) ;
-
+    EXTEND(SP,num_seqs);
     for( i=0 ; i<num_seqs ; i++ )
     {
       faidx_name = faidx_iseq(fai,i) ;
-      XPUSHs(sv_2mortal(newSVpv(faidx_name, 100))) ;
+      PUSHs(sv_2mortal(newSVpv(faidx_name,0))) ;
     }
 
 

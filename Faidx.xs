@@ -102,28 +102,6 @@ int length(SV* obj, char* seq_id)
 
 
 
-AV* get_all_sequence_ids(SV* obj)
-{
-    int num_seqs = 0 ;
-    const char* faidx_name ;
-    int i ;
-    SV* this_id ;
-    AV* id_list = (AV*)sv_2mortal((SV*)newAV()) ;
-
-    faidx_t *fai = ((Faidx*)SvIV(SvRV(obj)))->index ;
-    num_seqs = faidx_nseq(fai) ;
-
-    for( i=0 ; i<num_seqs ; i++ )
-    {
-      faidx_name = faidx_iseq(fai,i) ;
-      this_id = newSVpv(faidx_name,0);
-      av_push(id_list, this_id) ;
-    }
-    return id_list;
-}
-
-
-
 void DESTROY(SV* obj)
 {
   Faidx* faidx = (Faidx*)SvIV(SvRV(obj));
@@ -180,12 +158,8 @@ length(obj, seq_id)
   char* seq_id
 
 
-AV*
-get_all_sequence_ids(obj)
-   SV* obj
-
 void
-get_all_sequence_ids_array(obj)
+get_all_sequence_ids(obj)
    SV* obj
 INIT:
    int num_seqs ;

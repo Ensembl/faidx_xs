@@ -1,4 +1,4 @@
-# Faidx version 1.00
+# Faidx version 1.1
 
 This is a Perl XS interface into the FAIDX component of htslib
 
@@ -27,4 +27,3 @@ http://www.apache.org/licenses/
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.2 or,
 at your option, any later version of Perl 5 you may have available.
-

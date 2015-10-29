@@ -3,6 +3,6 @@ Faidx.xs
 Makefile.PL
 MANIFEST
 ppport.h
-README
+README.md
 t/Faidx.t
 lib/Faidx.pm

@@ -1,6 +1,14 @@
 Revision history for Perl extension Faidx.
 
-0.01  Thu Mar 19 13:52:27 2015
-	- original version; created by h2xs 1.23 with options
-		-A -n Faidx
-
+1.0 Original release
+1.1 get_all_sequence_ids added
+ Sample use:
+  $fasta = "/path/to/Xiphophorus_maculatus.Xipmac4.4.2.dna_rm.toplevel.fa.gz" ;
+  $index = Faidx->new($fasta);
+  @seq_id_list = $index->get_all_sequence_ids();
+  $seq_count = 0 ;
+  for my $seq (@seq_id_list)
+  {
+    $seq_count++ ;
+    print "$0:sequence id:$seq_count:".$seq."\n" ;
+  }

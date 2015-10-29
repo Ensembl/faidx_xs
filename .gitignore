@@ -4,6 +4,7 @@
 *.obj
 *.elf
 Makefile
+Faidx.c
 
 # Precompiled Headers
 *.gch

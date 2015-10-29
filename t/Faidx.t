@@ -22,7 +22,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4 ;
+use Test::More tests => 5 ;
 BEGIN { use_ok('Faidx') } ;
 
 #########################
@@ -46,4 +46,5 @@ warn $length;
 
 ok(1) ;
 
-
+$index->get_all_sequence_ids();
+ok(1) ;

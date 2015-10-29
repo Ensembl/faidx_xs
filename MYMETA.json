@@ -4,7 +4,7 @@
       "Rishi Nag <rishi@ebi.ac.uk>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.150001",
+   "generated_by" : "ExtUtils::MakeMaker version 7.1, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "unknown"
    ],
@@ -35,5 +35,5 @@
       }
    },
    "release_status" : "stable",
-   "version" : "1.00"
+   "version" : "0.01"
 }

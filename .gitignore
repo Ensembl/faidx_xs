@@ -1,8 +1,9 @@
-# Object files
+# Object/Intermediate files
 *.o
 *.ko
 *.obj
 *.elf
+Makefile
 
 # Precompiled Headers
 *.gch
@@ -62,4 +63,3 @@ a.out
 *.o
 *.obj
 *.class
-

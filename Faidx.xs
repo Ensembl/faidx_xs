@@ -122,9 +122,10 @@ AV* get_all_sequence_ids(SV* obj)
       printf( "rn6DEBUG:SvPV:%d:%s\n", i, SvPV_nolen(this_id) ) ;
     }
 
-    /* display some info about/from the array */
+    /* for debug display some info about/from the array */
     int top_index = (int)av_top_index(id_list) ;
     printf( "rn6DEBUG:topindex=%d\n", top_index ) ;
+
 //    printf( "rn6DEBUG:topindex-1 value=%s\n", av_fetch(id_list, (top_index-1), 0),100 ) ;
     return id_list;
 }

@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - master
-      - sg-codeqlwf
+
   pull_request:
     branches:
       - master
-      - sg-codeqlwf
 
 jobs:
   analyze:
